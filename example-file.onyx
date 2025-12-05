@@ -1,0 +1,31 @@
+package main
+
+use core {
+    println
+}
+
+X :: struct {
+    x: i32
+    y: i32
+
+    make :: () -> X {
+        return X
+    }
+}
+
+X.do_the_thing :: (self: &#Self) {
+    println("Doing the thing!")
+}
+
+Y :: enum {
+    x :: 10
+}
+
+main :: () {
+    if true {
+        X.foo("wow this works!")
+        x->foo()
+    }
+
+    return 10 + 20
+}
