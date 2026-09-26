@@ -1,0 +1,114 @@
+==================
+match declaration and statement
+==================
+
+package main
+
+print_type :: #match {
+    (x: i32) {
+        return x
+    },
+    (x: str) => x,
+}
+
+log :: #match #local {}
+
+#match #order 10 print_type (x: $T) {
+    return x
+}
+
+#match hash.to_u32 (use p: Person) -> u32 {
+    return 1
+}
+
+#match core.alloc.as_allocator PoolAllocator.as_allocator
+
+---
+
+(source_file
+  (package_clause
+    (keyword)
+    name: (identifier_list
+      (identifier)))
+  (binding_declaration
+    name: (const_identifier
+      (identifier))
+    (operator)
+    value: (match_declaration
+      (compiler_directive)
+      (function_definition
+        (function_header
+          (parameter_list
+            parameter: (parameter
+              (identifier)
+              type: (type_identifier))))
+        (function_body
+          (block
+            (return_statement
+              (keyword)
+              (identifier))
+            (automatic_semicolon))))
+      (parameter_list
+        parameter: (parameter
+          (identifier)
+          type: (type_identifier)))
+      body: (identifier)))
+  (automatic_semicolon)
+  (binding_declaration
+    name: (const_identifier
+      (identifier))
+    (operator)
+    value: (match_declaration
+      (compiler_directive)
+      (compiler_directive)))
+  (automatic_semicolon)
+  (match_directive
+    (compiler_directive)
+    (compiler_directive)
+    order: (int_literal)
+    overloaded_func: (identifier_list
+      (identifier))
+    overload: (function_definition
+      (function_header
+        (parameter_list
+          parameter: (parameter
+            (identifier)
+            type: (polymorphic_variable))))
+      (function_body
+        (block
+          (return_statement
+            (keyword)
+            (identifier))
+          (automatic_semicolon)))))
+  (automatic_semicolon)
+  (match_directive
+    (compiler_directive)
+    overloaded_func: (identifier_list
+      (identifier)
+      (identifier))
+    overload: (function_definition
+      (function_header
+        (parameter_list
+          parameter: (parameter
+            is_used: (keyword)
+            (identifier)
+            type: (identifier)))
+        (return_type
+          (type_identifier)))
+      (function_body
+        (block
+          (return_statement
+            (keyword)
+            (int_literal))
+          (automatic_semicolon)))))
+  (automatic_semicolon)
+  (match_directive
+    (compiler_directive)
+    overloaded_func: (identifier_list
+      (identifier)
+      (identifier)
+      (identifier))
+    overload: (identifier)
+    overload: (selector)
+    overload: (selector))
+  (automatic_semicolon))

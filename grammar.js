@@ -158,6 +158,7 @@ module.exports = grammar({
         $.export_directive,
         $.js_directive,
         $.overload_directive,
+        $.match_directive,
         $.operator_directive,
         $.if_directive,
         $.scope_directive,
@@ -204,9 +205,22 @@ module.exports = grammar({
     overload_directive: ($) =>
       seq(
         alias("#overload", $.compiler_directive),
-        field("overloaded_func", $._factor_no_call),
-        alias("::", $.punctuation),
-        field("overload", $._expression),
+        optional(
+          seq(alias("#order", $.compiler_directive), field("order", $.int_literal)),
+        ),
+        field("overloaded_func", $.identifier_list),
+        optional(alias("::", $.punctuation)),
+        field("overload", $._proc_option),
+      ),
+    match_directive: ($) =>
+      seq(
+        alias("#match", $.compiler_directive),
+        optional(
+          seq(alias("#order", $.compiler_directive), field("order", $.int_literal)),
+        ),
+        field("overloaded_func", $.identifier_list),
+        optional(alias("::", $.punctuation)),
+        field("overload", $._proc_option),
       ),
     operator_directive: ($) =>
       seq(
@@ -404,16 +418,33 @@ module.exports = grammar({
     match_declaration: ($) =>
       seq(
         alias("#match", $.compiler_directive),
-        optional(seq("->", field("expected_type", $._type))),
         repeat(
           choice(
             alias("#locked", $.compiler_directive),
             alias("#local", $.compiler_directive),
           ),
         ),
+        optional(seq("->", field("expected_type", $._type))),
         "{",
-        commas($, $._expression),
+        commas($, $._overload_option),
         "}",
+      ),
+
+    _overload_option: ($) =>
+      seq(
+        optional(
+          seq(alias("#order", $.compiler_directive), field("order", $.int_literal)),
+        ),
+        $._proc_option,
+      ),
+
+    _proc_option: ($) =>
+      choice(
+        $.macro_definition,
+        $.function_definition,
+        $.quick_function_definition,
+        seq($.parameter_list, "=>", field("body", $._expression)),
+        $._expression,
       ),
 
     init_declaration: ($) =>
@@ -613,6 +644,7 @@ module.exports = grammar({
               seq(
                 "->",
                 choice(
+                  alias("#auto", $.compiler_directive),
                   alias($._type, $.return_type),
                   seq(
                     "(",
