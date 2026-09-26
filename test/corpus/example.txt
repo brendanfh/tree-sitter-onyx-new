@@ -1,0 +1,150 @@
+==================
+example file
+==================
+
+package main
+
+use core {
+    println
+}
+
+X :: struct {
+    x: i32
+    y: i32
+
+    make :: () -> X {
+        return X
+    }
+}
+
+X.do_the_thing :: (self: &#Self) {
+    println("Doing the thing!")
+}
+
+Y :: enum {
+    x :: 10
+}
+
+main :: () {
+    if true {
+        X.foo("wow this works!")
+        x->foo()
+    }
+
+    return 10 + 20
+}
+
+---
+
+(source_file
+  (package_clause
+    (keyword)
+    name: (identifier_list
+      (identifier)))
+  (use_statement
+    (keyword)
+    package_name: (identifier_list
+      (identifier))
+    (identifier)
+    (automatic_semicolon))
+  (automatic_semicolon)
+  (binding_declaration
+    name: (const_identifier
+      (identifier))
+    (operator)
+    value: (struct_type
+      (keyword)
+      (struct_field_declaration
+        (identifier)
+        (operator)
+        type: (type_identifier))
+      (automatic_semicolon)
+      (struct_field_declaration
+        (identifier)
+        (operator)
+        type: (type_identifier))
+      (automatic_semicolon)
+      (binding_declaration
+        name: (const_identifier)
+        (operator)
+        value: (function_definition
+          (function_header
+            (parameter_list)
+            (return_type
+              (identifier)))
+          (function_body
+            (block
+              (return_statement
+                (keyword)
+                (identifier))
+              (automatic_semicolon)))))
+      (automatic_semicolon)))
+  (automatic_semicolon)
+  (binding_declaration
+    name: (const_identifier
+      (identifier)
+      (selector)
+      (selector))
+    (operator)
+    value: (function_definition
+      (function_header
+        (parameter_list
+          parameter: (parameter
+            (identifier)
+            type: (pointer_type)
+            type: (pointer_type
+              (compiler_directive)))))
+      (function_body
+        (block
+          (identifier)
+          (proc_call
+            (argument
+              (string_literal)))
+          (automatic_semicolon)))))
+  (automatic_semicolon)
+  (binding_declaration
+    name: (const_identifier
+      (identifier))
+    (operator)
+    value: (enum_type
+      (keyword)
+      (enum_value_declaration
+        name: (identifier)
+        value: (int_literal))
+      (automatic_semicolon)))
+  (automatic_semicolon)
+  (binding_declaration
+    name: (const_identifier
+      (identifier))
+    (operator)
+    value: (function_definition
+      (function_header
+        (parameter_list))
+      (function_body
+        (block
+          (if_statement
+            (keyword)
+            condition: (bool_literal)
+            if_true: (block
+              (block
+                (identifier)
+                (selector)
+                (selector)
+                (proc_call
+                  (argument
+                    (string_literal)))
+                (automatic_semicolon)
+                (identifier)
+                (method_call)
+                name: (method_call)
+                (method_call)
+                (automatic_semicolon))))
+          (automatic_semicolon)
+          (return_statement
+            (keyword)
+            (binary_expression
+              left: (int_literal)
+              operator: (operator)
+              right: (int_literal)))
+          (automatic_semicolon)))))
+  (automatic_semicolon))
